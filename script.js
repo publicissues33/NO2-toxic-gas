@@ -1,89 +1,44 @@
-// 平滑滾動導航
 document.addEventListener('DOMContentLoaded', function() {
-    // 導航連結平滑滾動
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
+  // 平滑滾動導航
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // 滾動時導航欄高亮
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-link');
+
+  function highlightNavigation() {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (pageYOffset >= sectionTop - 200) {
+        current = section.getAttribute('id');
+      }
     });
 
-    // 滾動時導航欄高亮
-    const sections = document.querySelectorAll('section[id]');
-    const navItems = document.querySelectorAll('.nav-link');
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) {
+        item.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', highlightNavigation);
 
-    function highlightNavigation() {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= sectionTop - 200) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === '#' + current) {
-                item.classList.add('active');
-            }
-        });
-    }
-
-    window.addEventListener('scroll', highlightNavigation);
-
-
-    // 數字動畫效果（首頁 hero 區域直接觸發，不依賴 IntersectionObserver）
-  function animateNumber(element) {
-  const target = parseFloat(element.getAttribute('data-target'));
-  const unit = element.getAttribute('data-unit') || '';
-  if (isNaN(target)) return; // ✅ 防止非數字造成錯誤
-
-  const duration = 2000;
-  const frameRate = 30;
-  const totalFrames = Math.round(duration / (1000 / frameRate));
-  let frame = 0;
-  const step = target / totalFrames;
-
-  const timer = setInterval(() => {
-    frame++;
-    const current = Math.min(step * frame, target);
-    element.innerText = Math.round(current).toLocaleString() + unit;
-
-    if (frame >= totalFrames) {
-      clearInterval(timer);
-      element.innerText = Math.round(target).toLocaleString() + unit;
-    }
-  }, 1000 / frameRate);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
+  // 數字動畫效果
   const stats = document.querySelectorAll('.stat-number[data-target]');
   stats.forEach(stat => animateNumber(stat));
-});
 
-    // 卡片懸停效果
-    const cards = document.querySelectorAll('.pollution-card, .rights-card, .worker-card, .industry-card, .action-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-    // ...existing code...
-// 數字動畫函數
-function animateNumber(element) {
+  function animateNumber(element) {
     if (element.dataset.animated === "true") return;
     const target = parseFloat(element.getAttribute('data-target'));
     const unit = element.getAttribute('data-unit') || '';
@@ -91,57 +46,64 @@ function animateNumber(element) {
     const frameRate = 30;
     const totalFrames = Math.round(duration / (1000 / frameRate));
     let frame = 0;
-    const from = 0;
-    const step = (target - from) / totalFrames;
+    const step = target / totalFrames;
     const timer = setInterval(() => {
-        frame++;
-        const current = Math.min(from + step * frame, target);
-        let display;
-        if (target % 1 !== 0) {
-            display = current.toFixed(1);
-        } else {
-            display = Math.round(current).toLocaleString();
-        }
-        element.innerText = unit ? display + unit : display;
-        if (frame >= totalFrames) {
-            clearInterval(timer);
-            let finalDisplay;
-            if (target % 1 !== 0) {
-                finalDisplay = target.toFixed(1);
-            } else {
-                finalDisplay = Math.round(target).toLocaleString();
-            }
-            element.innerText = unit ? finalDisplay + unit : finalDisplay;
-            element.dataset.animated = "true";
-        }
+      frame++;
+      const current = Math.min(step * frame, target);
+      element.innerText = unit ? Math.round(current).toLocaleString() + unit : Math.round(current).toLocaleString();
+      if (frame >= totalFrames) {
+        clearInterval(timer);
+        element.innerText = unit ? Math.round(target).toLocaleString() + unit : Math.round(target).toLocaleString();
+        element.dataset.animated = "true";
+      }
     }, 1000 / frameRate);
-}
-        setInterval(() => {
-            warningBanner.style.opacity = warningBanner.style.opacity === '0.7' ? '1' : '0.7';
-        }, 1500);
-   } 
+  }
 
-    // 表單驗證
-    const reportForm = document.querySelector('.report-form');
-    if (reportForm) {
-        reportForm.addEventListener('submit', handleFormSubmit);
-    }
+  // 警示條閃爍
+  const warningBanner = document.querySelector('.warning-banner');
+  if (warningBanner) {
+    setInterval(() => {
+      warningBanner.style.opacity = warningBanner.style.opacity === '0.7' ? '1' : '0.7';
+    }, 1500);
+  }
+
+  // 卡片懸停動畫
+  const cards = document.querySelectorAll('.pollution-card, .rights-card, .worker-card, .industry-card, .action-card');
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-10px) scale(1.02)';
+    });
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+
+  // 表單提交監聽（若有表單）
+  const reportForm = document.querySelector('.report-form');
+  if (reportForm) {
+    reportForm.addEventListener('submit', handleFormSubmit);
+  }
 });
 
-// ...existing code...
-
-// 檢舉表單相關函數
+// 檢舉表單開關函數
 function openReportForm() {
-    const modal = document.getElementById('reportModal');
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+  const modal = document.getElementById('reportModal');
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 
 function closeReportForm() {
-    const modal = document.getElementById('reportModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
+  const modal = document.getElementById('reportModal');
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
 }
+
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('reportModal');
+  if (event.target === modal) {
+    closeReportForm();
+  }
+});
 
 // 點擊模態框外部關閉
 window.addEventListener('click', function(event) {
