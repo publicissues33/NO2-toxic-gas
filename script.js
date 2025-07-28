@@ -83,6 +83,92 @@ document.addEventListener('DOMContentLoaded', function() {
   if (reportForm) {
     reportForm.addEventListener('submit', handleFormSubmit);
   }
+
+  // ========== 🔧 Accordion 展開/收合功能修復 🔧 ==========
+  function initAccordion() {
+    console.log('🔧 開始初始化Accordion功能...');
+    
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    console.log('📋 找到', accordionHeaders.length, '個accordion header');
+    
+    if (accordionHeaders.length === 0) {
+      console.warn('⚠️ 沒有找到 .accordion-header 元素');
+      return;
+    }
+    
+    accordionHeaders.forEach((header, index) => {
+      console.log('🔨 處理第', index + 1, '個header:', header.textContent.trim());
+      
+      // 移除可能存在的舊事件監聽器
+      header.removeEventListener('click', accordionClickHandler);
+      
+      // 添加新的事件監聽器
+      header.addEventListener('click', accordionClickHandler);
+      
+      // 確保初始狀態正確
+      const content = header.nextElementSibling;
+      if (content && content.classList.contains('accordion-content')) {
+        if (!header.classList.contains('active')) {
+          content.style.maxHeight = '0';
+          content.style.padding = '0 20px';
+          content.style.overflow = 'hidden';
+        }
+      }
+    });
+    
+    console.log('✅ Accordion功能初始化完成！');
+  }
+
+  // Accordion點擊處理函數
+  function accordionClickHandler() {
+    const content = this.nextElementSibling;
+    
+    if (!content || !content.classList.contains('accordion-content')) {
+      console.log('❌ 找不到對應的accordion-content元素');
+      return;
+    }
+    
+    // 切換 active 狀態
+    const isActive = this.classList.contains('active');
+    
+    if (isActive) {
+      // 收合
+      console.log('📤 收合:', this.textContent.trim());
+      this.classList.remove('active');
+      content.classList.remove('active');
+      content.style.maxHeight = '0';
+      content.style.padding = '0 20px';
+      content.style.overflow = 'hidden';
+      content.style.transition = 'max-height 0.3s ease, padding 0.3s ease';
+    } else {
+      // 展開
+      console.log('📥 展開:', this.textContent.trim());
+      this.classList.add('active');
+      content.classList.add('active');
+      content.style.maxHeight = content.scrollHeight + 'px';
+      content.style.padding = '15px 20px';
+      content.style.overflow = 'visible';
+      content.style.transition = 'max-height 0.3s ease, padding 0.3s ease';
+    }
+  }
+
+  // 立即初始化accordion功能
+  initAccordion();
+  
+  // 備用初始化（延遲執行，確保DOM完全載入）
+  setTimeout(function() {
+    console.log('🔄 執行備用accordion初始化...');
+    initAccordion();
+  }, 1000);
+  
+  // 再次備用初始化（更長延遲，處理動態載入的內容）
+  setTimeout(function() {
+    console.log('🔄 執行最終accordion初始化...');
+    initAccordion();
+  }, 3000);
+
+  // ========== 🔧 Accordion修復結束 🔧 ==========
+
 });
 
 // 檢舉表單開關函數
@@ -577,3 +663,73 @@ window.addEventListener('load', function() {
     }, 500);
 });
 
+// ========== 🔧 手動Accordion修復工具（備用方案） 🔧 ==========
+// 如果上述方法無效，可以在控制台執行以下函數
+
+// 強制修復函數（可在控制台手動執行）
+function forceFixAccordion() {
+    console.log('🚨 執行強制Accordion修復...');
+    
+    const buttons = document.querySelectorAll('.accordion-header');
+    console.log('📋 找到', buttons.length, '個accordion按鈕');
+    
+    buttons.forEach((button, index) => {
+        button.onclick = function() {
+            const content = this.nextElementSibling;
+            
+            if (!content || !content.classList.contains('accordion-content')) {
+                console.log('❌ 按鈕', index + 1, '沒有對應的content');
+                return;
+            }
+            
+            const isActive = this.classList.contains('active');
+            
+            if (isActive) {
+                // 收合
+                console.log('📤 收合按鈕', index + 1);
+                this.classList.remove('active');
+                content.classList.remove('active');
+                content.style.maxHeight = '0';
+                content.style.padding = '0 20px';
+            } else {
+                // 展開
+                console.log('📥 展開按鈕', index + 1);
+                this.classList.add('active');
+                content.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.padding = '15px 20px';
+            }
+        };
+        
+        console.log('✅ 已為按鈕', index + 1, '添加onclick事件');
+    });
+    
+    console.log('🎉 強制修復完成！');
+}
+
+// 診斷函數（可在控制台手動執行）
+function diagnoseAccordion() {
+    console.log('🔍 ========== Accordion診斷報告 ==========');
+    console.log('📊 accordion-header數量：', document.querySelectorAll('.accordion-header').length);
+    console.log('📊 accordion-content數量：', document.querySelectorAll('.accordion-content').length);
+    console.log('📊 accordion-item數量：', document.querySelectorAll('.accordion-item').length);
+    
+    const headers = document.querySelectorAll('.accordion-header');
+    headers.forEach((header, index) => {
+        const hasClickEvent = header.onclick !== null;
+        const content = header.nextElementSibling;
+        const hasContent = content && content.classList.contains('accordion-content');
+        
+        console.log(`📋 按鈕 ${index + 1}:`);
+        console.log(`   📝 文字: "${header.textContent.trim()}"`);
+        console.log(`   🖱️ 有點擊事件: ${hasClickEvent}`);
+        console.log(`   📄 有對應內容: ${hasContent}`);
+        console.log(`   🎯 當前狀態: ${header.classList.contains('active') ? '展開' : '收合'}`);
+    });
+    
+    console.log('🔍 ========== 診斷完成 ==========');
+}
+
+// 將修復函數暴露到全域，方便控制台使用
+window.forceFixAccordion = forceFixAccordion;
+window.diagnoseAccordion = diagnoseAccordion;
