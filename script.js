@@ -115,9 +115,13 @@ window.addEventListener('click', function(event) {
 
 // 修正 warningBanner 相關 setInterval 應在 DOMContentLoaded 外部
 // 若 warningBanner 需動畫，請確保 warningBanner 已正確定義
-setInterval(() => {
+const warningBanner = document.querySelector('.warning-banner');
+
+if (warningBanner) {
+  setInterval(() => {
     warningBanner.style.opacity = warningBanner.style.opacity === '0.7' ? '1' : '0.7';
-}, 1500);
+  }, 1500);
+}
 // 表單提交處理
 function handleFormSubmit(e) {
     e.preventDefault();
