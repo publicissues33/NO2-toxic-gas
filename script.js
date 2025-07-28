@@ -119,7 +119,7 @@ function animateNumber(element) {
         setInterval(() => {
             warningBanner.style.opacity = warningBanner.style.opacity === '0.7' ? '1' : '0.7';
         }, 1500);
-    }
+    
 
     // 表單驗證
     const reportForm = document.querySelector('.report-form');
