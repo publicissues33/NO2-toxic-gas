@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://publicissues33.github.io/NO2-toxic-gas/sitemap.xml
