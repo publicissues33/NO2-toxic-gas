@@ -1,0 +1,289 @@
+/* --- 真正三欄式：圖片置中，左右包圍文字 --- */
+.truth-3col-truecenter {
+  display: grid;
+  grid-template-columns: 1fr 520px 1fr;
+  gap: 44px;
+  align-items: center;
+  margin: 40px 0 0 0;
+}
+.truth-3col-sidecol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.truth-3col-imgcol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.truth-3col-imgcenter {
+  width: 100%;
+  max-width: 520px;
+  max-height: 520px;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: block;
+}
+@media (max-width: 1200px) {
+  .truth-3col-truecenter {
+    grid-template-columns: 1fr 340px 1fr;
+    gap: 18px;
+  }
+  .truth-3col-imgcenter {
+    max-width: 340px;
+    max-height: 260px;
+  }
+}
+@media (max-width: 900px) {
+  .truth-3col-truecenter {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .truth-3col-imgcenter {
+    max-width: 100vw;
+    max-height: 180px;
+  }
+}
+/* --- 置中大圖+兩側卡片，字體與排版優化 --- */
+.truth-img-center-row {
+  display: flex;
+  justify-content: center;
+  margin: 36px 0 44px 0;
+}
+.truth-img-center-img {
+  width: 100%;
+  max-width: 700px;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: block;
+}
+.truth-2col-row {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  align-items: flex-start;
+}
+.truth-2col-col {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 420px;
+}
+.framework-col-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.framework-item {
+  font-size: 1.13em;
+  padding: 28px 22px;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  margin: 0;
+}
+.framework-item h3 {
+  font-size: 1.18em;
+  margin-bottom: 12px;
+}
+.framework-item p {
+  font-size: 1.08em;
+  line-height: 1.8;
+}
+@media (max-width: 1100px) {
+  .truth-img-center-img {
+    max-width: 98vw;
+    max-height: 260px;
+  }
+  .truth-2col-row {
+    gap: 18px;
+  }
+  .truth-2col-col {
+    max-width: 100%;
+  }
+}
+@media (max-width: 800px) {
+  .truth-img-center-row {
+    margin: 18px 0 24px 0;
+  }
+  .truth-img-center-img {
+    max-width: 100vw;
+    max-height: 180px;
+  }
+  .truth-2col-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .framework-col-grid {
+    gap: 14px;
+  }
+  .framework-item {
+    font-size: 1em;
+    padding: 18px 10px;
+  }
+}
+/* --- 三欄式：左誤導，中圖片，右真相 --- */
+.truth-3col-row {
+  display: grid;
+  grid-template-columns: 1fr 420px 1fr;
+  gap: 36px;
+  align-items: center;
+  margin-top: 36px;
+}
+.truth-3col-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.left-col .framework-item,
+.right-col .framework-item {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.framework-col-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 370px;
+}
+.truth-3col-img {
+  width: 100%;
+  max-width: 420px;
+  max-height: 520px;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: block;
+}
+@media (max-width: 1200px) {
+  .truth-3col-row {
+    grid-template-columns: 1fr 320px 1fr;
+    gap: 18px;
+  }
+  .truth-3col-img {
+    max-width: 320px;
+    max-height: 320px;
+  }
+  .framework-col-grid {
+    max-width: 260px;
+  }
+}
+@media (max-width: 900px) {
+  .truth-3col-row {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .truth-3col-img {
+    max-width: 100%;
+    max-height: 220px;
+  }
+  .framework-col-grid {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+
+/* --- 圖片大、卡片雙欄、左右分割 --- */
+.truth-flex-row {
+  display: flex;
+  align-items: stretch;
+  gap: 48px;
+  margin-top: 30px;
+}
+.truth-card-col {
+  flex: 3 1 0;
+  min-width: 0;
+  order: 1;
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+}
+.truth-card-col .framework-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.truth-card-col .framework-item {
+  padding: 22px 20px;
+  font-size: 1.08em;
+  margin: 0;
+}
+.truth-img-col {
+  flex: 5 1 0;
+  min-width: 0;
+  order: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+.truth-img-align {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.truth-side-img {
+  width: 100%;
+  max-width: 900px;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: block;
+}
+@media (max-width: 1200px) {
+  .truth-flex-row {
+    gap: 24px;
+  }
+  .truth-img-col {
+    max-width: 100%;
+    flex-basis: 0;
+  }
+  .truth-side-img {
+    max-width: 100%;
+    max-height: 420px;
+  }
+  .truth-card-col {
+    max-width: 100%;
+    flex-basis: 100%;
+  }
+  .truth-card-col .framework-grid {
+    max-width: 100%;
+  }
+}
+@media (max-width: 900px) {
+  .truth-flex-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .truth-img-col {
+    max-width: 100%;
+    width: 100%;
+    order: 2;
+    min-height: unset;
+    justify-content: center;
+  }
+  .truth-card-col {
+    order: 1;
+    align-items: flex-start;
+    max-width: 100%;
+    flex-basis: unset;
+  }
+  .truth-side-img {
+    max-width: 100%;
+    max-height: 320px;
+  }
+  .truth-card-col .framework-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+}

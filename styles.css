@@ -1,3 +1,321 @@
+/* flip-card 點擊提示 */
+.flip-tip {
+    margin-top: 12px;
+    font-size: 0.98em;
+    color: #0d9488;
+    opacity: 0.85;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+}
+/* === 三明治結構：中央圖片 sticky，左右卡片 === */
+.truth-sandwich-layout {
+    display: grid;
+    grid-template-columns: 1fr minmax(260px, 720px);
+    gap: 44px;
+    margin: 60px 0 0 0;
+    align-items: start;
+    justify-content: center;
+}
+.truth-sandwich-col {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+.truth-sandwich-col.center {
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    display: flex;
+    min-height: 60vh;
+}
+.truth-sandwich-img-sticky {
+    position: sticky;
+    top: 45vh;
+    z-index: 2;
+    width: 100%;
+    max-width: 720px;
+    margin: 80px auto 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.truth-sandwich-img {
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 16/9;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    background: #fff;
+    display: block;
+    margin: 0 auto;
+}
+/* 卡片樣式（沿用 flip-card） */
+.flip-card {
+    background: none;
+    border: none;
+    perspective: 1200px;
+    width: 100%;
+    max-width: 420px;
+    min-height: 180px;
+    cursor: pointer;
+    outline: none;
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(.4,2,.6,1);
+    transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    min-height: 180px;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.13em;
+    transition: background 0.2s, color 0.2s;
+}
+.flip-card-front {
+    background: #ffeaea;
+    color: #b91c1c;
+    border-left: 6px solid #e11d48;
+    z-index: 2;
+}
+.flip-card-back {
+    background: #e6f9f7;
+    color: #0f766e;
+    border-left: 6px solid #0d9488;
+    transform: rotateY(180deg);
+    z-index: 3;
+}
+.flip-card-front h3, .flip-card-back h3 {
+    font-size: 1.18em;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+@media (max-width: 1300px) {
+    .truth-sandwich-layout {
+        grid-template-columns: 1fr 520px;
+        gap: 18px;
+    }
+    .truth-sandwich-img-sticky {
+        max-width: 520px;
+    }
+    .truth-sandwich-img {
+        max-width: 520px;
+    }
+}
+@media (max-width: 900px) {
+    .truth-sandwich-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+    .truth-sandwich-col.center {
+        align-items: center;
+        justify-content: center;
+        min-height: unset;
+        display: flex;
+    }
+    .truth-sandwich-img-sticky {
+        position: relative;
+        top: unset;
+        max-width: 98vw;
+    }
+    .truth-sandwich-img {
+        max-width: 98vw;
+        min-width: 120px;
+    }
+    .flip-card, .flip-card-inner, .flip-card-front, .flip-card-back {
+        min-height: 120px;
+        padding: 18px 10px;
+        font-size: 1em;
+    }
+}
+@media (max-width: 900px) {
+    .truth-sandwich-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+    .truth-sandwich-col.center {
+        align-items: center;
+        margin-bottom: 18px;
+    }
+    .truth-sandwich-img-sticky {
+        position: relative;
+        top: unset;
+        max-width: 98vw;
+    }
+    .truth-sandwich-img {
+        max-width: 98vw;
+        min-width: 120px;
+    }
+    .flip-card, .flip-card-inner, .flip-card-front, .flip-card-back {
+        min-height: 120px;
+        padding: 18px 10px;
+        font-size: 1em;
+    }
+}
+/* === 真相顛覆框架：三明治結構 + Timeline + Flip Card === */
+.truth-framework.timeline {
+    margin: 60px 0 0 0;
+}
+.timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    position: relative;
+}
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #0d9488 0%, #0f766e 100%);
+    border-radius: 2px;
+    transform: translateX(-50%);
+    z-index: 0;
+    opacity: 0.18;
+}
+.timeline-row {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    align-items: center;
+    gap: 44px;
+    position: relative;
+    z-index: 1;
+    min-height: 220px;
+    scroll-snap-align: start;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s, transform 0.7s;
+}
+.timeline-row.in-view {
+    opacity: 1;
+    transform: none;
+}
+.flip-card {
+    background: none;
+    border: none;
+    perspective: 1200px;
+    width: 100%;
+    max-width: 420px;
+    min-height: 180px;
+    cursor: pointer;
+    outline: none;
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(.4,2,.6,1);
+    transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    min-height: 180px;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.13em;
+    transition: background 0.2s, color 0.2s;
+}
+.flip-card-front {
+    background: #ffeaea;
+    color: #b91c1c;
+    border-left: 6px solid #e11d48;
+    z-index: 2;
+}
+.flip-card-back {
+    background: #e6f9f7;
+    color: #0f766e;
+    border-left: 6px solid #0d9488;
+    transform: rotateY(180deg);
+    z-index: 3;
+}
+.flip-card-front h3, .flip-card-back h3 {
+    font-size: 1.18em;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+.timeline-imgcol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.timeline-img {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 16/9;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    background: #fff;
+}
+@media (max-width: 900px) {
+    .timeline-list::before {
+        left: 24px;
+        width: 3px;
+        opacity: 0.22;
+    }
+    .timeline-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        min-height: 0;
+        margin-left: 0;
+        padding-left: 36px;
+    }
+    .timeline-imgcol {
+        justify-content: flex-start;
+        margin-bottom: 12px;
+    }
+    .timeline-img {
+        max-width: 90vw;
+        min-width: 120px;
+    }
+    .flip-card, .flip-card-inner, .flip-card-front, .flip-card-back {
+        min-height: 120px;
+        padding: 18px 10px;
+        font-size: 1em;
+    }
+}
+@media (max-width: 600px) {
+    .timeline-list {
+        gap: 32px;
+    }
+    .timeline-row {
+        padding-left: 10px;
+    }
+    .timeline-img {
+        min-width: 80px;
+        max-width: 98vw;
+    }
+}
 /* 基礎樣式 */
 * {
     margin: 0;
